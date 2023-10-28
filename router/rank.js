@@ -13,9 +13,9 @@ router.get('/:userId', async (req, res) => {
     {
         const jsonFile = fs.readFileSync('./data/people.json', 'utf8');
         const jsonData = JSON.parse(jsonFile);
-        const peoples = jsonData.people;
+        let months = jsonData.month;
 
-        let cnt = 0;
+        let cnt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
         try { // activity에서 commit 횟수를 count하는 작업
             const response = await axios.get(`${gitlabBaseUrl}/users/${userId}/events`);
@@ -27,8 +27,42 @@ router.get('/:userId', async (req, res) => {
             console.log(`activity_data count : ${activity_log.length}`);    
          
             for (let i = 0; i < activity_log.length; i++){
-                if (activity_log[i].action_name != 'created') cnt++
+                if (activity_log[i].action_name != 'created')
+                {
+                    // console.log(new Date(activity_log[i].created_at))
+                    const nowMonth = (new Date(activity_log[i].created_at)).getMonth() + 1
+
+                    cnt[nowMonth]++
+                }
             }
+
+            for (let i = 1; i <= 12; i++){
+                if (cnt[i] <= 0)
+                    continue
+
+                var returnValue = months[i.toString()].find(function(data){ return data.id === userId});
+
+                if (returnValue === undefined) // people.json에 해당 유저에 대한 정보가 없으면 추가
+                {
+                    months[i.toString()].push({ "id": userId, "commits": cnt[i] })
+
+                    months[i.toString()] = months[i.toString()].sort((a,b) => {return b.commits - a.commits})
+                }
+                else // people.json에 해당 유저에 대한 정보가 있으면 commits만 업데이트
+                {
+                    for (let j = 0; j < months[i.toString()].length; j++)
+                    {
+                        if (months[i.toString()][j].id == userId)
+                            months[i.toString()][j].commits = cnt[i];
+                    }
+
+                    months[i.toString()] = months[i.toString()].sort((a,b) => {return b.commits - a.commits})
+                }
+            }
+
+            fs.writeFileSync('./data/people.json', JSON.stringify({ "month" : months }))
+
+            res.json(months);
         
             console.log(`commits count : ${cnt}`);
             console.log(`sort type : ${ranktype}`)
@@ -40,27 +74,6 @@ router.get('/:userId', async (req, res) => {
                 console.log(e);
                 res.status(500).json({ error: '오류 발생' });
         }
-    
-        var returnValue = peoples.find(function(data){ return data.id === userId});
-    
-        if (returnValue === undefined) // people.json에 해당 유저에 대한 정보가 없으면 추가
-        {
-            peoples.push({ "id": userId, "commits": cnt })
-        }
-        else // people.json에 해당 유저에 대한 정보가 있으면 commits만 업데이트
-        {
-            for (let i = 0; i < peoples.length; i++)
-            {
-                if (peoples[i].id == userId)
-                    peoples[i].commits = cnt;
-            }
-        }
-
-        const temp = peoples.sort((a,b) => {return b.commits - a.commits})
-        
-        fs.writeFileSync('./data/people.json', JSON.stringify({ "people" : temp }))
-
-        res.json(temp);
     }
     if (ranktype == "likes")
     {
