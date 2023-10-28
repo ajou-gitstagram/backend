@@ -21,6 +21,8 @@ router.get('/:userId', async (req, res) => {
             const response = await axios.get(`${gitlabBaseUrl}/users/${userId}/events`);
             const activity_log = response.data
 
+            if (response === undefined) throw new Error("실 사용자 아님")
+
             // console.log(response)
         
             // console.log(activity_log);
@@ -71,8 +73,7 @@ router.get('/:userId', async (req, res) => {
         catch(e) {
                 // 오류 발생시 실행
             
-                console.log(e);
-                res.status(500).json({ error: '오류 발생' });
+            console.log("실 사용자 아님");
         }
     }
     if (ranktype == "likes")
