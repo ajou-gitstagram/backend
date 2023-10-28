@@ -9,6 +9,16 @@ router.get('/', async (req, res) => {
     const jsonData = JSON.parse(jsonFile);
     const posts = jsonData.post;
 
+    const post_num = req.query.uid
+    const like_num = req.query.like
+
+    if (post_num !== undefined && like_num !== undefined)
+    {
+        posts[post_num].like = like_num
+    }
+
+    fs.writeFileSync('./data/post.json', JSON.stringify({ "post" : posts }))
+
     const temp = posts.reverse()
 
     res.json(temp)
