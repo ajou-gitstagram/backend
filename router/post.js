@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
     const jsonData = JSON.parse(jsonFile);
     const posts = jsonData.post;
 
+    const userId = req.query.id
     const content = req.query.contents;
     const tag = JSON.parse(req.query.tags)
 
