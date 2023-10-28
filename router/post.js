@@ -20,8 +20,6 @@ router.get('/', (req, res) => {
     // Save the updated posts to post.json
     fs.writeFileSync('./data/post.json', JSON.stringify({ "post" : posts }))
     console.log("게시물 저장 완료")
-
-    res.redirect(`/home?id=${userId}`)
 });
 
 // // 게시물 생성 POST 라우트
