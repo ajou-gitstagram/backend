@@ -12,6 +12,7 @@ commit data json 파일 구조
 post data json 구조
 
 과거 -> 현재 순으로 정렬
+
 배열 시작
  { 게시글 정보 (id, content, like, tags) },
  { 위와 같음 },
