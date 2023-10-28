@@ -81,7 +81,13 @@ router.get('/', async (req, res) => {
 
     if (post_num !== undefined && like_num !== undefined)
     {
-        posts[post_num].like = like_num
+       for (let i = 0; i < posts.length; i++)
+       {
+            if (posts[i].uid == post_num)
+            {
+                posts[i].like = like_num;
+            }
+       }
     }
 
     fs.writeFileSync('./data/post.json', JSON.stringify({ "post" : posts }))
