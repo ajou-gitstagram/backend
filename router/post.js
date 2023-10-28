@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
     const tags = req.body.tags.split(',').map(tag => tag.trim())
 
     // 게시물 데이터를 배열에 추가
-    posts.push({ "id" : id, "content" : content, "like" : 0,  "tag" : tags});
+    posts.push({"uid": posts.length, "id" : id, "content" : content, "like" : 0,  "tag" : tags});
 
     // Save the updated posts to post.json
     fs.writeFileSync('./data/post.json', JSON.stringify({ "post" : posts }))
