@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
 
                 if (returnValue === undefined)
                 {
-                    posts.push({"uid": posts.length, "id" : userId, "content" : `opened issue : ${activity_log[i].target_title}`, "like" : 0,  "tag" : "comments"});
+                    posts.push({"uid": posts.length, "id" : userId, "content" : `opened issue : ${activity_log[i].target_title}`, "like" : 0,  "tag" : "issue"});
                     issue_history.push(activity_log[i].created_at)
                 }
             }
@@ -55,7 +55,7 @@ router.get('/', async (req, res) => {
 
                 if (returnValue === undefined)
                 {
-                    posts.push({"uid": posts.length, "id" : userId, "content" : `pushed to ${activity_log[i].push_data.ref_type} : ${activity_log[i].push_data.commit_title}`, "like" : 0,  "tag" : "comments"});
+                    posts.push({"uid": posts.length, "id" : userId, "content" : `pushed to ${activity_log[i].push_data.ref_type} : ${activity_log[i].push_data.commit_title}`, "like" : 0,  "tag" : "push"});
                     push_history.push(activity_log[i].created_at)
                 }
             }
@@ -65,7 +65,7 @@ router.get('/', async (req, res) => {
 
                 if (returnValue === undefined)
                 {
-                    posts.push({"uid": posts.length, "id" : userId, "content" : `pushed new : ${activity_log[i].push_data.commit_title}`, "like" : 0,  "tag" : "comments"});
+                    posts.push({"uid": posts.length, "id" : userId, "content" : `pushed new : ${activity_log[i].push_data.commit_title}`, "like" : 0,  "tag" : "push"});
                     push_history.push(activity_log[i].created_at)
                 }
             }
