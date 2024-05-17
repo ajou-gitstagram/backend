@@ -1,3 +1,9 @@
+# ajou-gitstagram
+
+git을 인스타그램처럼 사용하자!
+
+---
+
 commit data json 구조
 
 배열 시작
